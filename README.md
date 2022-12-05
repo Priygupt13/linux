@@ -31,6 +31,8 @@ CMPE-283 Assignments - Fall 2022
 
 ## Implementation
  *   We have used two atomic variables , atomic_t for exit counter and atomic64_t  for counter total CPU cycles to process all exits and we are exporting these variable through EXPORT_SYMBOL so that we can access those variable inside vmx.c file while handing exits.
+ 
+ *  We have created a function to records the total CPU processing time to `cpu_cycles` in vmx.c
 
 ## Required Software
 *   Ubuntu Machine or Google Cloud Platform
