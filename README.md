@@ -129,6 +129,9 @@ sudo reboot
 *   [cpuid.c - /arch/x86/kvm/](https://github.com/Priygupt13/linux/blob/master/arch/x86/kvm/cpuid.c)
 *   [vmx.c - /arch/x86/kvm/vmx/](https://github.com/Priygupt13/linux/blob/master/arch/x86/kvm/vmx/vmx.c)
 
+
+we have modified vmx.c and cpuid.c file and after modification we need to rebuild the kernal using make command.
+
 ##  How to Authorize User to Provide Access to NestedVM?
 *   uname -a
 *   sudo adduser er_priyagupta123 libvirt
@@ -147,8 +150,8 @@ sudo reboot
 3. Double click on your machine and open terminal
 4. Start virt-manager by typing “virt-manager” in terminal
 5. Start inner vm.
-
-
+6. In our test VM, we created a test file in C in which we mov $0x4FFFFFFC to eax and we are executing CPUID in to get back results of the new leaf function.
+   
 ## Screenshots
 
 ![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/compile_kernel.jpeg)
