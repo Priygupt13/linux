@@ -1493,6 +1493,16 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
 }
 EXPORT_SYMBOL_GPL(kvm_cpuid);
 
+/* Begin: VT_Assignment counters */
+
+// Total count of exits
+atomic_t exit_counter = ATOMIC_INIT(0);
+EXPORT_SYMBOL(exit_counter);
+
+/* Begin: VT_Assignment counters */
+
+
+
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
@@ -1502,7 +1512,14 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 
 	eax = kvm_rax_read(vcpu);
 	ecx = kvm_rcx_read(vcpu);
-	kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+	
+	// Handle CPUID leaf nodes as per VT assignment
+	if (eax == 0x4FFFFFFC){
+		eax = arch_atomic_read(&exit_counter);
+	} else {
+		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+	}
+
 	kvm_rax_write(vcpu, eax);
 	kvm_rbx_write(vcpu, ebx);
 	kvm_rcx_write(vcpu, ecx);

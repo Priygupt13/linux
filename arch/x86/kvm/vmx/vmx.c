@@ -238,6 +238,14 @@ static void *vmx_l1d_flush_pages;
 /* Control for disabling CPU Fill buffer clear */
 static bool __read_mostly vmx_fb_clear_ctrl_available;
 
+/* Begin: VT_Assignment counters */
+
+// Counter for total exits. Exported by cpuid.c
+extern atomic_t exit_counter;
+
+/* End : VT_Assignment counters */
+
+
 static int vmx_setup_l1d_flush(enum vmx_l1d_flush_state l1tf)
 {
 	struct page *page;
@@ -6286,6 +6294,9 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	union vmx_exit_reason exit_reason = vmx->exit_reason;
 	u32 vectoring_info = vmx->idt_vectoring_info;
 	u16 exit_handler_index;
+
+	// Count total exits regardless the handling
+	arch_atomic_inc(&exit_counter);
 
 	/*
 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
