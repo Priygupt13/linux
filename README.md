@@ -5,7 +5,7 @@ CMPE-283 Assignments - Fall 2022
 
 *	University: [San Jose State University](http://www.sjsu.edu/)
 *   Course: [Virtual Technologies](https://catalog.sjsu.edu/preview_course_nopop.php?catoid=12&coid=58409)
-*	Professor: [Michael Larkin](michael.larkin@sjsu.edu)
+*	Professor: [Michael Larkin](mailto:michael.larkin@sjsu.edu)
 ## Team Members
 
 *   [Priya Gupta](https://github.com/priyagupta)
@@ -36,8 +36,9 @@ CMPE-283 Assignments - Fall 2022
 *   Understanding of Linux Kernel
 
 ## Files
-*   [Assignment 1 - Discovering VMX Features](https://github.com/phanisaimunipalli/cmpe283-vt/blob/main/283_Assignment1-F22.pdf)
+*   [Assignment 1 - Discovering VMX Features](https://github.com/Priygupt13/CMPE283_VirtualizationAssignments)
 *   [Assignment 2 & 3 - Instrumentation in Hypercall](https://github.com/phanisaimunipalli/cmpe283-vt/blob/main/283_Assignment2-3_Fall2022.pdf)
+*   [Word Documentation of Assignment 2](/vtassignment2_fall2022.pdf)
 
 
 
