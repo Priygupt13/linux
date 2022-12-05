@@ -16,7 +16,7 @@ CMPE-283 Assignments - Fall 2022
 *   Setup and Create Google Cloud Account, Project and VM Instance.
 *   For CPUID leaf node %eax=0x4FFFFFFD:
     *   Return the high 32 bits of the total time spent processing all exits in %ebx
-    *   Return the low 32 bits of the total time spent processing all exits in %ecx
+    *   Return the low 32 bits of the total time spent processing all exits in %ecx    
 *   Linux Kernel Installation and Build 
 *   Write a Test File.
 *   Word Documentation
@@ -29,6 +29,8 @@ CMPE-283 Assignments - Fall 2022
 *   Run the test file and Verify the output.
 *   Readme.md Documentation
 
+## Implementation
+ *   We have used two atomic variables , atomic_t for exit counter and atomic64_t  for counter total CPU cycles to process all exits and we are exporting these variable through EXPORT_SYMBOL so that we can access those variable inside vmx.c file while handing exits.
 
 ## Required Software
 *   Ubuntu Machine or Google Cloud Platform
