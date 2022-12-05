@@ -131,6 +131,17 @@ sudo reboot
 
 
 we have modified vmx.c and cpuid.c file and after modification we need to rebuild the kernal using make command.
+  ```bash
+        make -j 4 modules
+        sudo make -j 4 INSTALL_MOD_STRIP=1 modules_install && make install
+        sudo lsmod | grep kvm
+        sudo rmmod kvm_intel
+        sudo rmmod kvm
+        sudo modprobe kvm
+        sudo modprobe kvm_intel
+        sudo lsmod | grep kvm
+       
+   ```     
 
 ##  How to Authorize User to Provide Access to NestedVM?
 *   uname -a
