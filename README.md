@@ -151,6 +151,7 @@ sudo reboot
 
 ## Screenshots
 
+![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/compile_kernel.jpeg)
 
 **Ubuntu uname** 
 
@@ -174,7 +175,7 @@ sudo reboot
 
 ![Complete](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/install_complete.jpeg)
 
-![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/compile_kernel.jpeg)
+
 
 ![Build](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/build_kernel.jpeg)
 
