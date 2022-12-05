@@ -243,6 +243,9 @@ static bool __read_mostly vmx_fb_clear_ctrl_available;
 // Counter for total exits. Exported by cpuid.c
 extern atomic_t exit_counter;
 
+// Counter for total CPU time spent processing all exits. Exported by cpuid.c
+extern atomic64_t cpu_cycles;
+
 /* End : VT_Assignment counters */
 
 
@@ -6284,6 +6287,13 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
 		       vmcs_read16(VIRTUAL_PROCESSOR_ID));
 }
 
+/* 
+ * Records the total CPU processing time to `cpu_cycles`
+ */
+void __record_exit_processing_time(uint64_t processing_start_time){
+	arch_atomic64_add((rdtsc() - processing_start_time), &cpu_cycles);
+}
+
 /*
  * The guest has exited.  See if we can fix it or if we need userspace
  * assistance.
@@ -6294,7 +6304,10 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	union vmx_exit_reason exit_reason = vmx->exit_reason;
 	u32 vectoring_info = vmx->idt_vectoring_info;
 	u16 exit_handler_index;
-
+	
+	// Start time marker for this function
+	uint64_t processing_start_time = rdtsc();
+        // 	__record_exit_processing_time(processing_start_time); 
 	// Count total exits regardless the handling
 	arch_atomic_inc(&exit_counter);
 
@@ -6352,23 +6365,28 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 		 */
 		if (vmx->emulation_required) {
 			nested_vmx_vmexit(vcpu, EXIT_REASON_TRIPLE_FAULT, 0, 0);
+	                __record_exit_processing_time(processing_start_time); 
 			return 1;
 		}
 
-		if (nested_vmx_reflect_vmexit(vcpu))
-			return 1;
+		if (nested_vmx_reflect_vmexit(vcpu)){
+	               __record_exit_processing_time(processing_start_time); 
+		       return 1;
+		}
 	}
 
 	/* If guest state is invalid, start emulating.  L2 is handled above. */
-	if (vmx->emulation_required)
+	if (vmx->emulation_required){
+	        __record_exit_processing_time(processing_start_time); 
 		return handle_invalid_guest_state(vcpu);
-
+	}
 	if (exit_reason.failed_vmentry) {
 		dump_vmcs(vcpu);
 		vcpu->run->exit_reason = KVM_EXIT_FAIL_ENTRY;
 		vcpu->run->fail_entry.hardware_entry_failure_reason
 			= exit_reason.full;
 		vcpu->run->fail_entry.cpu = vcpu->arch.last_vmentry_cpu;
+	        __record_exit_processing_time(processing_start_time); 
 		return 0;
 	}
 
@@ -6378,6 +6396,7 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 		vcpu->run->fail_entry.hardware_entry_failure_reason
 			= vmcs_read32(VM_INSTRUCTION_ERROR);
 		vcpu->run->fail_entry.cpu = vcpu->arch.last_vmentry_cpu;
+	        __record_exit_processing_time(processing_start_time); 
 		return 0;
 	}
 
@@ -6408,6 +6427,7 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 		}
 		vcpu->run->internal.data[ndata++] = vcpu->arch.last_vmentry_cpu;
 		vcpu->run->internal.ndata = ndata;
+	        __record_exit_processing_time(processing_start_time); 
 		return 0;
 	}
 
@@ -6430,24 +6450,37 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 		}
 	}
 
-	if (exit_fastpath != EXIT_FASTPATH_NONE)
+	if (exit_fastpath != EXIT_FASTPATH_NONE){
+	        __record_exit_processing_time(processing_start_time); 
 		return 1;
-
+	}
 	if (exit_reason.basic >= kvm_vmx_max_exit_handlers)
 		goto unexpected_vmexit;
 #ifdef CONFIG_RETPOLINE
-	if (exit_reason.basic == EXIT_REASON_MSR_WRITE)
+	if (exit_reason.basic == EXIT_REASON_MSR_WRITE){
+	        __record_exit_processing_time(processing_start_time); 
 		return kvm_emulate_wrmsr(vcpu);
-	else if (exit_reason.basic == EXIT_REASON_PREEMPTION_TIMER)
+	}
+	else if (exit_reason.basic == EXIT_REASON_PREEMPTION_TIMER){
+	        __record_exit_processing_time(processing_start_time); 
 		return handle_preemption_timer(vcpu);
-	else if (exit_reason.basic == EXIT_REASON_INTERRUPT_WINDOW)
+	}
+	else if (exit_reason.basic == EXIT_REASON_INTERRUPT_WINDOW){
+	        __record_exit_processing_time(processing_start_time); 
 		return handle_interrupt_window(vcpu);
-	else if (exit_reason.basic == EXIT_REASON_EXTERNAL_INTERRUPT)
+	}
+	else if (exit_reason.basic == EXIT_REASON_EXTERNAL_INTERRUPT){
+	        __record_exit_processing_time(processing_start_time); 
 		return handle_external_interrupt(vcpu);
-	else if (exit_reason.basic == EXIT_REASON_HLT)
+	}
+	else if (exit_reason.basic == EXIT_REASON_HLT){
+	        __record_exit_processing_time(processing_start_time); 
 		return kvm_emulate_halt(vcpu);
-	else if (exit_reason.basic == EXIT_REASON_EPT_MISCONFIG)
+	}
+	else if (exit_reason.basic == EXIT_REASON_EPT_MISCONFIG){
+	        __record_exit_processing_time(processing_start_time); 
 		return handle_ept_misconfig(vcpu);
+	}
 #endif
 
 	exit_handler_index = array_index_nospec((u16)exit_reason.basic,
@@ -6455,6 +6488,7 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	if (!kvm_vmx_exit_handlers[exit_handler_index])
 		goto unexpected_vmexit;
 
+	__record_exit_processing_time(processing_start_time); 
 	return kvm_vmx_exit_handlers[exit_handler_index](vcpu);
 
 unexpected_vmexit:
@@ -6467,6 +6501,8 @@ unexpected_vmexit:
 	vcpu->run->internal.ndata = 2;
 	vcpu->run->internal.data[0] = exit_reason.full;
 	vcpu->run->internal.data[1] = vcpu->arch.last_vmentry_cpu;
+	
+	__record_exit_processing_time(processing_start_time); 
 	return 0;
 }
 

@@ -1499,6 +1499,10 @@ EXPORT_SYMBOL_GPL(kvm_cpuid);
 atomic_t exit_counter = ATOMIC_INIT(0);
 EXPORT_SYMBOL(exit_counter);
 
+// Counter for total CPU cycles to process all exits
+atomic64_t cpu_cycles = ATOMIC64_INIT(0);
+EXPORT_SYMBOL(cpu_cycles);
+
 /* Begin: VT_Assignment counters */
 
 
@@ -1506,6 +1510,7 @@ EXPORT_SYMBOL(exit_counter);
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
 	u32 eax, ebx, ecx, edx;
+        uint64_t temp_cpu_cycles;
 
 	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
 		return 1;
@@ -1514,8 +1519,14 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 	ecx = kvm_rcx_read(vcpu);
 	
 	// Handle CPUID leaf nodes as per VT assignment
-	if (eax == 0x4FFFFFFC){
+	if (eax == 0x4FFFFFFC){ // Assignment 2.1
 		eax = arch_atomic_read(&exit_counter);
+	} else if (eax ==  0x4FFFFFFD){ // Assignment 2.2
+                temp_cpu_cycles = arch_atomic64_read(&cpu_cycles);
+		// The low 32 bits of the total CPU time spent processing all exits
+		ecx = (temp_cpu_cycles & 0xffffffff);
+		// The high 32 bits of the total CPU time spent processing all exits
+		ebx = (temp_cpu_cycles >> 32);
 	} else {
 		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
 	}
