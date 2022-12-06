@@ -232,3 +232,7 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
 ![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image11.png)
 
 ![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image12.png)
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image13.png)
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image14.png)
