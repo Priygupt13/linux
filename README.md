@@ -195,6 +195,8 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
    * sudo virt-manager
    
 4. Now we created a test file in nested VM to test our functionalities. In our test file, we mov $0x4FFFFFFC to eax and we are executing CPUID in to get back results of the new leaf function.
+
+5. Compile the test.c file and verify the output
    
 ![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image1.png)
 
