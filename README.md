@@ -11,7 +11,7 @@ CMPE-283 Assignments - Fall 2022
 *   [Priya Gupta](https://github.com/priyagupta)
 *   [Phani Sai Ram Munipalli](https://www.linkedin.com/in/iamphanisairam/)
 
-### Distribution
+### Distribution (Q1 & Q2) How to steps are mentioned below clearly.
 **Priya Gupta**: 
 *   Setup and Create Google Cloud Account, Project and VM Instance.
 *   For CPUID leaf node %eax=0x4FFFFFFD:
@@ -23,8 +23,10 @@ CMPE-283 Assignments - Fall 2022
 
 **Phani Sai Ram Munipalli**: 
 *   Create SSH Key and Link to the VM Instance.
+   *  I followed the steps on [GCP SSH Keys](https://cloud.google.com/compute/docs/connect/add-ssh-keys)
 *   For CPUID leaf node %eax=0x4FFFFFFC:
     *   Return the total number of exits (all types) in %eax
+    *    For creating the exits counter, I watched the How To video of Professor Larkin and went through the Intel file to find the respective codes. So that I can arrange as per the logic.
 *   Linux Kernel Installation Verification.
 *   Run the test file and Verify the output.
 *   Readme.md Documentation
