@@ -11,7 +11,7 @@ CMPE-283 Assignments - Fall 2022
 *   [Priya Gupta](https://github.com/priyagupta)
 *   [Phani Sai Ram Munipalli](https://www.linkedin.com/in/iamphanisairam/)
 
-### Distribution (Q1 & Q2) How to steps are mentioned below clearly.
+### Distribution
 **Priya Gupta**: 
 *   Setup and Create Google Cloud Account, Project and VM Instance.
 *   For CPUID leaf node %eax=0x4FFFFFFD:
@@ -23,10 +23,8 @@ CMPE-283 Assignments - Fall 2022
 
 **Phani Sai Ram Munipalli**: 
 *   Create SSH Key and Link to the VM Instance.
-   *  I followed the steps on [GCP SSH Keys](https://cloud.google.com/compute/docs/connect/add-ssh-keys)
 *   For CPUID leaf node %eax=0x4FFFFFFC:
     *   Return the total number of exits (all types) in %eax
-    *    For creating the exits counter, I watched the How To video of Professor Larkin and went through the Intel file to find the respective codes. So that I can arrange as per the logic.
 *   Linux Kernel Installation Verification.
 *   Run the test file and Verify the output.
 *   Readme.md Documentation
@@ -71,7 +69,7 @@ CMPE-283 Assignments - Fall 2022
   * grep -cw vmx /proc/cpuinfo (confirm output > 0)
 ```
 
-6. Install the below tools as they are required to proceed forward.
+6. Install the required compilation tools by running the below commands
 
 ```bash
         sudo apt-get update
@@ -97,38 +95,50 @@ CMPE-283 Assignments - Fall 2022
 ``1. Copy the config file in the linux repo.``
 
 ``2. cp /boot/config-5.15.0-1025-gcp ~/linux/.config.``
-
+  
 ``3. Install build dependencies``
 
 ``4. sudo apt-get install build-essential bionic ccache flex bison libssl-dev libelf-dev``
 
 Format: 
 ``make -j TOTAL_CPU_CORES modules ``
-
+ 
 ```bash
-make prepare
 
-make -j 8 modules
+* Prepare the linux 
+    make prepare
 
-make -j 8
+* Build the modules
+    make -j 4 modules
 
-sudo make -j 8 INSTALL_MOD_STRIP=1 modules_install
+* Build the kernel
+    make -j 4
+    
+* Packaging the modules
+    sudo make -j 4 INSTALL_MOD_STRIP=1 modules_install
 ```
 
 ##  How to Install Kernel?
 ```bash
-sudo make -j 4 install
+
+* Install the kernel into VM
+     sudo make -j 4 install
+     
+* Reboot to see the changes
+   sudo reboot
 ```
 
 ##  How to Verify Kernel Installation?
 ```bash
-old uname: uname -a
-new uname: uname -a
-uname -a
-make -j 4
-sudo make -j 4 INSTALL_MOD_STRIP=1 modules_install
-sudo make -j 4 install
-sudo reboot 
+
+ check your old kernel version with : uname -a
+  
+ make -j 4
+ sudo make -j 4 INSTALL_MOD_STRIP=1 modules_install
+ sudo make -j 4 install
+ sudo reboot 
+ 
+ check your new kernel version with : uname -a
 ```
 ##  Where is the Code Change/Addition?
 
@@ -146,8 +156,22 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
         sudo modprobe kvm
         sudo modprobe kvm_intel
         sudo lsmod | grep kvm
-       
-   ```     
+        sudo reboot 
+   ```    
+## Create a inner VM inside our current VM 
+   
+   * We need to install some extra tools for KVM, then check kvm-ok, and reboot:
+     
+     ```bash
+          sudo apt-get install cpu-checker
+          sudo apt update
+          sudo apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+          sudo kvm-ok
+          sudo reboot
+     ```
+   Install Virtual Manager to create inner vm in current VM
+   
+      * sudo apt-get install virt-manager
 
 ##  How to Authorize User to Provide Access to NestedVM?
 *   uname -a
@@ -161,13 +185,16 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
     *   sudo systemctl enable --now libvirtd
 
 ##  How to run a test file?
-1. Use remote desktop to connect with the VM:
+
+1. Use remote desktop to connect with the inner VM:
     https://remotedesktop.google.com/headless
-2. Find your machine by clicking on “remote access”
-3. Double click on your machine and open terminal
-4. Start virt-manager by typing “virt-manager” in terminal
-5. Start inner vm.
-6. In our test VM, we created a test file in C in which we mov $0x4FFFFFFC to eax and we are executing CPUID in to get back results of the new leaf function.
+2. Downlaod ubuntu image 
+   *  wget https://releases.ubuntu.com/jammy/ubuntu-22.04.1-desktop-amd64.iso
+   
+3. Open virt Manager and install this ubuntu image on your inner VM using the GUI
+   * sudo virt-manager
+   
+4. Now we created a test file in nested VM to test our functionalities. In our test file, we mov $0x4FFFFFFC to eax and we are executing CPUID in to get back results of the new leaf function.
    
 ![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image1.png)
 
