@@ -13,18 +13,21 @@ CMPE-283 Assignments - Fall 2022
 
 ### Distribution
 **Priya Gupta**: 
-*   Setup and Create Google Cloud Account, Project and VM Instance.
-*   For CPUID leaf node %eax=0x4FFFFFFD:
+*   Setup and Create Google Cloud Account, Project and VM Instance and enable nested virtualization.
+*   Did changes in cpuid.c and vmx.c files for implementing functionality for CPUID leaf node %eax=0x4FFFFFFD:
     *   Return the high 32 bits of the total time spent processing all exits in %ebx
-    *   Return the low 32 bits of the total time spent processing all exits in %ecx    
-*   Linux Kernel Installation and Build 
+    *   Return the low 32 bits of the total time spent processing all exits in %ecx 
+*   Resolve issues after doing modifications.
+*   Create Inner VM by installing virtual manager and install ubuntu OS in it.
+*   Access nested VM on GCP and test the functionality by creating a test file.
 *   Write a Test File.
 *   Word Documentation
 
 **Phani Sai Ram Munipalli**: 
 *   Create SSH Key and Link to the VM Instance.
-*   For CPUID leaf node %eax=0x4FFFFFFC:
+*   Added code in cpuid.c and vmx.c files for CPUID leaf node %eax=0x4FFFFFFC:
     *   Return the total number of exits (all types) in %eax
+*   Linux Kernel Installation and Build    
 *   Linux Kernel Installation Verification.
 *   Run the test file and Verify the output.
 *   Readme.md Documentation
