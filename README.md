@@ -167,38 +167,39 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
 5. Start inner vm.
 6. In our test VM, we created a test file in C in which we mov $0x4FFFFFFC to eax and we are executing CPUID in to get back results of the new leaf function.
    
-## Screenshots
-
-![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/compile_kernel.jpeg)
-
-**Ubuntu uname** 
-
-![Login](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/uname_ubntu.jpeg)
+![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image1.png)
 
 
-**Verify Nested VM Enabled** 
-
-![NestedVM](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/verify_nestedvm.jpeg)
-
-**Package Config** 
-
-![Config](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/kernel_upgrade.jpeg)
-
-![Install](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/install_kernel.jpeg)
-
-**Gitlab Installation** 
-
-![GitLab](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/install_gitlab.jpeg)
-
-
-![Complete](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/install_complete.jpeg)
+![Login](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image2.png)
 
 
 
-![Build](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/build_kernel.jpeg)
+
+![NestedVM](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image3.png)
 
 
-**Test Output** 
 
-![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/test_output.jpeg)
+![Config](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image4.png)
 
+![Install](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image5.png)
+
+
+
+![GitLab](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image6.png)
+
+
+![Complete](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image7.png)
+
+
+
+![Build](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image8.png)
+
+
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image9.png)
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image10.png)
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image11.png)
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image12.png)
