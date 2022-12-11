@@ -241,3 +241,9 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
 ![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image13.png)
 
 ![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image14.png)
+
+# CMPE283 Assignment 3
+
+Question : Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there 
+more exits performed during certain VM operations? Approximately how many exits does a full VM 
+boot entail?
