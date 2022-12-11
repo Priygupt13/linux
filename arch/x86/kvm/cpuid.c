@@ -1505,7 +1505,37 @@ EXPORT_SYMBOL(cpu_cycles);
 
 /* Begin: VT_Assignment counters */
 
+/* Begin : VT_Assignment3 */
+atomic_t exits_type_counter[70];
 
+EXPORT_SYMBOL(exits_type_counter);
+
+atomic64_t cpu_cycles_counter[70];
+
+EXPORT_SYMBOL(cpu_cycles_counter);
+/* End : VT_Assignment3 */
+
+/* Check if Intel SDM contains ecx */
+inline bool is_ecx_present_in_sdm(u32 ecx)
+{
+        return ecx >= 0 
+	    && ecx <= 69 
+	    && ecx != 35 
+	    && ecx != 38 
+	    && ecx != 42;
+}
+
+/* Check if ecx is enabled in VMX */
+inline bool is_ecx_enabled_in_vmx(u32 ecx)
+{
+        return ecx != 5 
+	    && ecx != 6
+	    && ecx != 11
+	    && ecx != 17
+	    && ecx != 65
+	    && ecx != 66
+	    && ecx != 69;
+}
 
 int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 {
@@ -1527,6 +1557,33 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 		ecx = (temp_cpu_cycles & 0xffffffff);
 		// The high 32 bits of the total CPU time spent processing all exits
 		ebx = (temp_cpu_cycles >> 32);
+	} 
+	else if (eax == 0x4FFFFFFE){ // Assignment 3.1
+		if (is_ecx_present_in_sdm(ecx)){
+			if (is_ecx_enabled_in_vmx(ecx)){
+				eax = arch_atomic_read(&exits_type_counter[(int)ecx]);
+			} else {
+				eax = ebx = ecx = edx = 0;
+			}
+		} else {
+			eax = ebx = ecx = 0;
+			edx = 0xFFFFFFFF;	
+		}	       
+	} else if (eax == 0x4FFFFFFF){ // Assignment 3.2
+		if (is_ecx_present_in_sdm(ecx)) {
+			if (is_ecx_enabled_in_vmx(ecx)) {
+				temp_cpu_cycles  = atomic64_read(&cpu_cycles_counter[(int)ecx]);
+				// high 32 bits
+				ebx = (temp_cpu_cycles >> 32);
+				// low 32 bits
+				ecx = (temp_cpu_cycles & 0xFFFFFFFF);
+			} else {
+				eax = ebx = ecx = edx = 0;
+			}
+		} else {
+			eax = ebx = ecx = 0;
+			edx = 0xFFFFFFFF;	
+		}
 	} else {
 		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
 	}
@@ -1537,4 +1594,5 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 	kvm_rdx_write(vcpu, edx);
 	return kvm_skip_emulated_instruction(vcpu);
 }
+
 EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);

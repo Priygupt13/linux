@@ -248,6 +248,11 @@ extern atomic64_t cpu_cycles;
 
 /* End : VT_Assignment counters */
 
+/* Begin: VT_Assignment3 */
+extern atomic_t exits_type_counter[70];
+
+extern atomic64_t cpu_cycles_counter[70];
+/* End : VT_Assignment3 */
 
 static int vmx_setup_l1d_flush(enum vmx_l1d_flush_state l1tf)
 {
@@ -6310,6 +6315,15 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
         // 	__record_exit_processing_time(processing_start_time); 
 	// Count total exits regardless the handling
 	arch_atomic_inc(&exit_counter);
+        
+	// Adding code for VT_Assignment3
+	if (exit_reason.basic < 70) {
+		arch_atomic_inc(&exits_type_counter[(int)exit_reason.basic]);
+	}
+
+	if (exit_reason.basic < 70) {
+		arch_atomic64_add((rdtsc() - processing_start_time), &cpu_cycles_counter[(int)exit_reason.basic]);
+	}
 
 	/*
 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
