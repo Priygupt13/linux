@@ -22,6 +22,7 @@ CMPE-283 Assignments - Fall 2022
 *   Access nested VM on GCP and test the functionality by creating a test file.
 *   Write a Test File.
 *   Word Documentation
+*   Answered Q3 and Q3.1 (Please refer the answers below).
 
 **Phani Sai Ram Munipalli**: 
 *   Create SSH Key and Link to the VM Instance.
@@ -31,6 +32,8 @@ CMPE-283 Assignments - Fall 2022
 *   Linux Kernel Installation Verification.
 *   Run the test file and Verify the output.
 *   Readme.md Documentation
+*   Added code in cpuid.c and vmx.c files for returning the number of exits for the exit number provided (on input) in %ecx for CPUID leaf node %eax=0x4FFFFFFE
+*   Answered Question 4
 
 ## Implementation
  *   We have used two atomic variables , atomic_t for exit counter and atomic64_t  for counter total CPU cycles to process all exits and we are exporting these variable through EXPORT_SYMBOL so that we can access those variable inside vmx.c file while handing exits.
@@ -49,14 +52,17 @@ CMPE-283 Assignments - Fall 2022
 
 ## Assignment 3 
 
-Q3. Does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? 
-A. The number of exits from a virtual machine (VM) can depend on many factors, such as the type of VM, the operations it is performing, and the specific implementation of the VM. While certain exits do increase steadily, others remain constant. There are some exits that hop at an unpredictable rate when a browser is launched or a procedure is run.
+Q3. Does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations?
 
-*  Approximately how many exits does a full VM boot entail?
-A. Approximately 1284502 exits are required for the VM boot, with a total cycle time of 18733836564.
+Answer: The number of exits from a virtual machine (VM) can depend on many factors, such as the type of VM, the operations it is performing, and the specific implementation of the VM. While certain exits do increase steadily, others remain constant. There are some exits that hop at an unpredictable rate when a browser is launched or a procedure is run.
 
-Q4. Of the exit types defined in the SDM, which are the most frequent? Least?
-A. The most frequent exit type among those listed in the SDM is EXIT_REASON_EPT_VIOLATION(48) whereas EXIT_REASON_DR_ACCESS(29) is the least frequent.
+Q3.1  Approximately how many exits does a full VM boot entail?
+
+Answer: Approximately 1284502 exits are required for the VM boot, with a total cycle time of 18733836564.
+
+Q4 Of the exit types defined in the SDM, which are the most frequent? Least?
+
+Answer: The most frequent exit type among those listed in the SDM is EXIT_REASON_EPT_VIOLATION(48) whereas EXIT_REASON_DR_ACCESS(29) is the least frequent.
 
 
 
