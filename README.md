@@ -47,12 +47,20 @@ CMPE-283 Assignments - Fall 2022
 *   [Assignment 2 & 3 - Instrumentation in Hypercall](https://github.com/phanisaimunipalli/cmpe283-vt/blob/main/283_Assignment2-3_Fall2022.pdf)
 *   [Word Documentation of Assignment 2](/vtassignment2_fall2022.pdf)
 
+## Assignment 3 
 
+Q3. Does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? 
+A. The number of exits from a virtual machine (VM) can depend on many factors, such as the type of VM, the operations it is performing, and the specific implementation of the VM. While certain exits do increase steadily, others remain constant. There are some exits that hop at an unpredictable rate when a browser is launched or a procedure is run.
+
+*  Approximately how many exits does a full VM boot entail?
+A. Approximately 1284502 exits are required for the VM boot, with a total cycle time of 18733836564.
+
+Q4. Of the exit types defined in the SDM, which are the most frequent? Least?
+A. The most frequent exit type among those listed in the SDM is EXIT_REASON_EPT_VIOLATION(48) whereas EXIT_REASON_DR_ACCESS(29) is the least frequent.
 
 
 
 ## Setup and Run on GCP
-
 
 1. Create a New Project on GCP when you signup using your student account, you will get $300 free credits.
 
@@ -242,8 +250,38 @@ we have modified vmx.c and cpuid.c file and after modification we need to rebuil
 
 ![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image14.png)
 
-# CMPE283 Assignment 3
+## Assignment 3 Screenshots
 
-Question : Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there 
-more exits performed during certain VM operations? Approximately how many exits does a full VM 
-boot entail?
+![Compile](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image1a3.png)
+
+
+![Login](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image2a3.png)
+
+
+
+
+![NestedVM](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image3a3.png)
+
+
+
+![Config](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image4a3.png)
+
+![Install](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image5a3.png)
+
+
+
+![GitLab](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image6a3.png)
+
+
+![Complete](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image7.png)
+
+
+
+![Build](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image8a3.png)
+
+
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image9a3.png)
+
+![TestOutput](https://raw.githubusercontent.com/phanisaimunipalli/cmpe283-vt/main/screenshots/image10a3.png)
+
